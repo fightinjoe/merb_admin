@@ -1,0 +1,15 @@
+TODO:
+
+- Fix MerbAdmin.description and MerbAdmin.version
+- Fix LICENSE with your name
+- Fix Rakefile with your name and contact info
+- Add your code to lib/merb_admin.rb
+- Add your Merb rake tasks to lib/merb_admin/merbtasks.rb
+
+Remove anything that you don't need:
+
+- app/controllers/main.rb MerbAdmin::Main controller
+- app/views/layout/merb_admin.html.erb
+- spec/controllers/main_spec.rb controller specs
+- public/* any public files
+- stubs/* any stub files

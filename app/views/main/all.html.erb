@@ -1,0 +1,28 @@
+<%
+  throw_content( :for_title, "All #{ @models.size } models")
+%>
+
+<div id="content">
+  <h2>
+    All <%= @models.size %> models
+  </h2>
+
+  <ol class="models">
+    <% for mod in @models -%>
+      <li>
+        <a href="<%= url(:admin_model, :model => mod.singular_name) %>">
+          <%= mod.pretty_name.capitalize %>
+        </a>
+      </li>
+    <% end %>
+  </ol>
+
+  <!-- <ul class="horizontal unlist pages">
+    <li>Page:</li>
+    <%# for page in @models %>
+      <li>
+        <a href="?page=<%#= page.number %>"><%#= page.number %></a>
+      </li>
+    <%# end %>
+  </ul> -->
+</div>

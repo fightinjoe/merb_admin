@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>MerbAdmin: <%= catch_content( :for_title ) %></title>
+    <link href="<%= public_path_for :stylesheet, 'master.css' %>" type="text/css" charset="utf-8" rel="stylesheet" media="all" />
+    <script src="<%= public_path_for :javascript, 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="header">
+        <h1>
+          MerbAdmin
+          <% for m in @models %>
+            <a href="<%= url( :admin_model, m.singular_name, 'index' ) %>">
+              <%= m.pretty_name %>
+            </a>
+          <% end %>
+        </h1>
+      </div>
+
+      <%= catch_content :for_layout %>
+    </div>
+  </body>
+</html>
