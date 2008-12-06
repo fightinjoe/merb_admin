@@ -1,4 +1,5 @@
 require File.join( File.dirname(__FILE__), '..', '..', 'lib', 'merb_models' )
+require File.join( File.dirname(__FILE__), '..', '..', 'lib', 'metaid' )
 
 class MerbAdmin::Main < MerbAdmin::Application
   before :find_models

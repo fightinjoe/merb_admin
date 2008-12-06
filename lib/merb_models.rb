@@ -1,3 +1,5 @@
+require 'paginator'
+
 module MerbAdmin; class Models
   MODEL_REGEXP = %r{^class ([\w\d_\-:]+)(.*)?$}
 
@@ -38,6 +40,14 @@ module MerbAdmin; class Models
     def singular_name() model.to_s.snake_case.to_sym; end
     def plural_name()   model.to_s.snake_case.pluralize.to_sym; end
     def pretty_name()   model.to_s.snake_case.capitalize.pluralize; end
+
+    def pages
+      return @pages if @pages
+      @pages = Paginator.new( count, 20) do |offset, per_page|
+        find_all( :limit => per_page, :offset => offset )
+      end
+      @pages
+    end
   end
 
   module DatamapperSupport
@@ -48,12 +58,13 @@ module MerbAdmin; class Models
       }
     end
 
-    def count
-      model.count
-    end
+    def count() model.count; end
 
-    def page( page_number )
-      model.all(:limit => 10)
+    def id() model.id; end
+
+    def find_all( opts )
+      # opts[:order] ||= [:posted_at.desc, :id.asc]
+      model.all( opts )
     end
 
     def has_many_associations

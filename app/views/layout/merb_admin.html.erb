@@ -10,7 +10,7 @@
         <h1>
           MerbAdmin
           <% for m in @models %>
-            <a href="<%= url( :admin_model, m.singular_name, 'index' ) %>">
+            <a href="<%= url( :admin_model, m.singular_name ) %>">
               <%= m.pretty_name %>
             </a>
           <% end %>

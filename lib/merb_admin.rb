@@ -57,8 +57,7 @@ if defined?(Merb::Plugins)
       # the slice is mounted at /merb_admin - note that it comes before default_routes
       scope.match('/').to(:controller => 'main', :action => 'all').name(:home)
       # enable slice-level default routes by default
-      scope.match('/:model/(:action)').to(:controller => 'main', :action => 'index').name(:model)
-      scope.match('/:model/:action/:id.:format').to(:controller => 'main').name(:model_full)
+      scope.match('/:model(/:action(/:id(.:format)))').to(:controller => 'main').name(:model)
     end
     
   end
