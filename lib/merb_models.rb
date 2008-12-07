@@ -62,9 +62,17 @@ module MerbAdmin; class Models
 
     def id() model.id; end
 
+    # helper method for finding all objects in a model class.  Used
+    # specifically by #pages for pagination.
     def find_all( opts )
       # opts[:order] ||= [:posted_at.desc, :id.asc]
       model.all( opts )
+    end
+
+    # Given the +id+ of an object, finds that object by calling the
+    # finder method on the model.
+    def find( id )
+      model.get( id )
     end
 
     def has_many_associations
@@ -85,7 +93,7 @@ module MerbAdmin; class Models
       model.relationships.to_a.collect { |name,rel|
         {
           :name => name.to_s,
-          :type => association_type_lookup( rel ),
+          :type => association_type_lookup( rel ), # :has_many, :has_one, or :belongs_to
           :parent_model => rel.parent_model,
           :parent_key   => rel.parent_key.collect { |p| p.name },
           :child_model  => rel.child_model,
@@ -98,19 +106,22 @@ module MerbAdmin; class Models
 
       def type_lookup(type)
         {
-          DataMapper::Types::Serial  => Fixnum,
-          DataMapper::Types::Integer => Fixnum,
-          DataMapper::Types::Boolean => Boolean,
-          DataMapper::Types::Text    => String
+          DataMapper::Types::Serial   => :integer,
+          DataMapper::Types::Boolean  => :bool,
+          DataMapper::Types::Text     => :text,
+          String   => :string,
+          Integer  => :integer,
+          DateTime => :datetime
         }[ type ] || type
       end
 
       def association_type_lookup( relationship )
-        case self.model
-          when relationship.parent_model
-            r.options[:max] > 1 ? :has_many : :has_one
-          when relationship.child_model then :belongs_to
-          else raise 'unknowny type of association'
+        if    self.model == relationship.parent_model
+          relationship.options[:max] > 1 ? :has_many : :has_one
+        elsif self.model == relationship.child_model
+          :belongs_to
+        else
+          raise 'unknowny type of association'
         end
       end
   end

@@ -20,21 +20,5 @@
     <% end %>
   </ol>
 
-  <ul class="horizontal unlist pages">
-    <li>Page:</li>
-    <%
-      page  = params[:page].to_i
-      pages = (1..3).to_a + (page-2..page+2).to_a + (@model.pages.last.number-2..@model.pages.last.number).to_a
-      pages = pages.select{ |p| p > 0 }.uniq.sort
-      prev  = 0
-    %>
-
-    <% for p in pages %>
-      <%= '<li>&hellip;</li>' if prev+1 != p %>
-      <li>
-        <a href="?page=<%= p %>"><%= p %></a>
-      </li>
-      <% prev = p %>
-    <% end %>
-  </ul>
+  <%= print_pages %>
 </div>

@@ -1,0 +1,35 @@
+<% throw_content( :for_title, "#{ [ "#{@object.class} ##{@object.id}" ].uniq.join(': ') }") %>
+
+<div id="content" class="model">
+  <h2>
+    <%= catch_content( :for_title ) %>
+    <a href="<%= url( :admin_home ) %>">View all</a>
+    <a href="<%= url( :admin_model, @model.singular_name, 'edit', @object.id ) %>">Edit</a>
+    <form action="<%= url( :admin_model, @model.singular_name, 'destroy', @model.id ) %>" method="POST">
+      <input type="hidden" name="_method" value="DELETE" />
+      <input type="submit" value="Delete" />
+    </form>
+    </ul>
+  </h2>
+
+  <dl>
+    <% @model.attributes.each do |attribute| %>
+      <dt><%= attribute[:name] %></dt>
+      <dd>
+        <%= @object.send( attribute[:name] ) || '&nbsp;' %>
+      </dd>
+    <% end %>
+
+    <% for association in @model.belongs_to_associations %>
+      <dt><%= association[:name].to_s.capitalize %></dt>
+      <dd>
+        <% obj = @object.send( association[:name] ) %>
+        <%= object_link( obj ) unless obj.blank?   %>
+      </dd>
+    <% end %>
+
+    <% for association in @model.has_many_associations %>
+      <%= partial( 'show_has_many', :association => association ) %>
+    <% end %>
+  </dl>
+</div>

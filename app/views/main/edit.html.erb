@@ -1,0 +1,15 @@
+<% throw_content( :for_title, "Edit #{ @model.model }") %>
+
+<div id="content">
+  <h2>
+    Edit: <%= @model.model.to_s %>
+    <%= object_link(@object, 'Cancel') %>
+  </h2>
+
+  <form action="<%= object_url(@object) %>" method="POST">
+    <input type="hidden" name="_method" value="PUT" />
+    <%= partial( 'form', :model => @model ) %>
+    <input type="submit" value="Update" />
+    <%= object_link(@object, 'Cancel') %>
+  </form>
+</div>
