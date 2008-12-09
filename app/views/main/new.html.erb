@@ -1,0 +1,14 @@
+<% throw_content( :for_title, "New #{ @model.singular_name }") %>
+
+<div id="content">
+  <h2>
+    Create a new <%= @model.singular_name %>
+    <a href="<%= url( :admin_model, @model.singular_name ) %>">Cancel</a>
+  </h2>
+
+  <form action="<%=  %>" method="POST">
+    <%= partial( 'form', :model => @model ) %>
+    <input type="submit" value="Save" />
+    <a href="<%= url( :admin_model, @model.singular_name ) %>">Cancel</a>
+  </form>
+</div>

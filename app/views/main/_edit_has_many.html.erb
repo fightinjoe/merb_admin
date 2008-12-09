@@ -1,0 +1,24 @@
+<%
+  # Partial for editing the items in a has_many relationship
+  #
+  # ==== Parameters
+  #
+  # model<DataMapper::Base>: the model to which the relationship belongs
+  # 
+  # association<DataMapper::Associations::HasManyAssociation>: the association that forms the
+  #   basis for the relationship
+  name = association[:name]
+  key = association[:child_key].first
+  assoc_model = MerbAdmin::Models.new( association[:child_model] )
+%>
+
+<dt><%= name.to_s.capitalize %></dt>
+<dd>
+  <select name="model[<%= name %>][]" multiple="multiple">
+    <% for obj in assoc_model.find_all(:limit => 10) %>
+      <option value="<%= obj.id %>"<%= ' selected="selected"' if @object.send( name ).include?( obj ) %>>
+        <%= model_title(obj) %>
+      </option>
+    <% end %>
+  </select>
+</dd>

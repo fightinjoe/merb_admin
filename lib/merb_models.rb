@@ -64,7 +64,7 @@ module MerbAdmin; class Models
 
     # helper method for finding all objects in a model class.  Used
     # specifically by #pages for pagination.
-    def find_all( opts )
+    def find_all( opts = {} )
       # opts[:order] ||= [:posted_at.desc, :id.asc]
       model.all( opts )
     end

@@ -6,19 +6,19 @@
     <dd>
 
       <% if attribute[:key?] %>
-        <%= @object.send( name ) || '&nbsp' %>
+        <%= (@object && @object.send( name )) || '&nbsp' %>
 
       <% else %>
         <% case attribute[:type] %>
         <% when :string, :integer %>
-          <input type="text" name="model[<%= name %>]" value="<%= @object.send( name ) %>" />
+          <input type="text" name="model[<%= name %>]" value="<%= @object && @object.send( name ) %>" />
         <% when :text %>
-          <textarea name="model[<%= name %>]"><%= @object.send( name ) %></textarea>
+          <textarea name="model[<%= name %>]"><%= @object && @object.send( name ) %></textarea>
         <% when :datetime, :date %>
-          <input type="text" name="model[<%= name %>]" value="<%= @object.send( name ) %>" />
+          <input type="text" name="model[<%= name %>]" value="<%= @object && @object.send( name ) %>" />
         <% when :bool %>
-          Yes <input type="radio" name="model[<%= name %>]" value="true" checked="<%= @object.send( name ) && 'checked' %>" />
-          No <input type="radio" name="model[<%= name %>]" value="false" checked="<%= @object.send( name ) || 'checked' %>" />
+          Yes <input type="radio" name="model[<%= name %>]" value="true" checked="<%= @object && @object.send( name ) && 'checked' %>" />
+          No <input type="radio" name="model[<%= name %>]" value="false" checked="<%= @object && @object.send( name ) || 'checked' %>" />
         <% else %>
           <%= "Don't know how to edit #{ name }, type: #{ attribute[:type] }" %>
         <% end %>
@@ -29,11 +29,14 @@
   <% for bt in @model.belongs_to_associations %>
     <dt><%= bt[:name] %></dt>
     <dd>
-      <%#= partial( 'belongs_to', :association => bt ) %>
+      <%= partial( 'edit_belongs_to', :association => bt ) %>
     </dd>
   <% end %>
 
   <% for hm in @model.has_many_associations %>
-    <%#= partial( 'has_many_edit', :model => model, :association => hm ) %>
+    <dt><%= hm[:name] %></dt>
+    <dd>
+      <%= partial( 'edit_has_many', :association => hm ) %>
+    </dd>
   <% end %>
 </dl>
