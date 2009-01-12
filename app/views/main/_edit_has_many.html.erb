@@ -14,11 +14,19 @@
 
 <dt><%= name.to_s.capitalize %></dt>
 <dd>
-  <select name="model[<%= name %>][]" multiple="multiple">
-    <% for obj in assoc_model.find_all(:limit => 10) %>
-      <option value="<%= obj.id %>"<%= ' selected="selected"' if @object.send( name ).include?( obj ) %>>
-        <%= model_title(obj) %>
-      </option>
-    <% end %>
-  </select>
+  <% if through = association[:near_rel] %>
+    <p>
+      The <%= name %> association is a :through relationship defined through the
+      <%= through %> relationship.
+    </p>
+  <% else %>
+    <select name="object[<%= name %>][]" multiple="multiple">
+      <% for obj in assoc_model.find_all(:limit => 10) %>
+        <% selected = @object && @object.send( name ).include?( obj ) %>
+        <option value="<%= obj.id %>"<%= ' selected="selected"' if selected %>>
+          <%= model_title(obj) %>
+        </option>
+      <% end %>
+    </select>
+  <% end %>
 </dd>

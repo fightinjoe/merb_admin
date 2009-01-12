@@ -6,9 +6,9 @@
     <a href="<%= url( :admin_model, @model.singular_name ) %>">Cancel</a>
   </h2>
 
-  <form action="<%=  %>" method="POST">
+  <form action="<%= slice_url(:create_model, @model.singular_name.to_s) %>" method="POST">
     <%= partial( 'form', :model => @model ) %>
     <input type="submit" value="Save" />
-    <a href="<%= url( :admin_model, @model.singular_name ) %>">Cancel</a>
+    <a href="<%= slice_url( :model, @model.singular_name.to_s, 'index' ) %>">Cancel</a>
   </form>
 </div>

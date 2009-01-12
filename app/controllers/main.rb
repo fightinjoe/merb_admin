@@ -3,8 +3,8 @@ require File.join( File.dirname(__FILE__), '..', '..', 'lib', 'metaid' )
 
 class MerbAdmin::Main < MerbAdmin::Application
   before :find_models
-  before :find_model, :only => ['index', 'show', 'edit', 'new']
-  before :find_object, :only => ['show','edit']
+  before :find_model
+  before :find_object, :only => ['show','edit', 'update', 'destroy']
 
   def all() render; end
 
@@ -20,44 +20,46 @@ class MerbAdmin::Main < MerbAdmin::Application
     # move all association data into separate array to add
     # after model is created
     associations = @model.has_many_associations.collect { |a|
-      [ a, params['model'].delete( a[:name] ) ]
+      [ a, params[:object].delete( a[:name] ) ]
     }
 
     # zero out all blank fields
-    params[:model].each { |k,v| params[:model][k] = nil if v.blank? }
+    params[:object].each { |k,v| params[:object][k] = nil if v.blank? }
 
-    @model = @model.model.new(params[:model])
-    if @model.save
-      associations.each { |a, ids| update_has_many_association( a, @model, ids ) }
-      redirect url( "scaffold_#{self.class.Model.singular_name}", @model)
+    @object = @model.model.new( params[:object] )
+    if @object.save
+      associations.each { |a, ids| update_has_many_association( a, ids ) }
+      redirect slice_url( :model, @model.singular_name.to_s, 'show', @object.id )
     else
+      debugger
       render :new
     end
   end
 
   def update
-    params[:model].each { |k,v| params[:model][k] = nil if v.blank? }
+    raise NotFound unless @object
 
-    @model = find_first( self.class.Model, params[:id] )
-    raise NotFound unless @model
+    # nullify any fields that come back empty
+    params[:object].each { |k,v| params[:object][k] = nil if v.blank? }
 
-    associations = self.class.Model.scaf_has_manys.collect { |a|
-      [ a, params['model'].delete( a.name ) ]
+    # find the objects that are being associated with @object
+    associations = @model.has_many_associations.collect { |a|
+      [ a, params[:object].delete( a[:name] ) ]
     }
 
-    if @model.update_attributes(params[:model])
-      associations.each { |a, ids| update_has_many_association( a, @model, ids ) }
-      redirect url( "scaffold_#{self.class.Model.singular_name}", @model)
+    # Update the attributes of the object, then add in any has_many associations
+    if @object.update_attributes(params[:object])
+      associations.each { |a, ids| update_has_many_association( a, ids ) }
+      redirect slice_url( :model, @model.singular_name.to_s, 'show', @object.id )
     else
-      raise BadRequest
+      render :edit
     end
   end
 
   def destroy
-    @model = find_first( self.class.Model, params[:id] )
-    raise NotFound unless @model
-    if delete( @model )
-      redirect url( "scaffold_#{self.class.Model.plural_name}" )
+    raise NotFound unless @object
+    if @object.destroy
+      redirect slice_url( :model, @model.singular_name.to_s, 'index' )
     else
       raise BadRequest
     end
@@ -78,25 +80,19 @@ class MerbAdmin::Main < MerbAdmin::Application
     @object = @model.find( params[:id] )
   end
 
-  def clear_association( object, assoc )
-    rel = object.send( assoc.name )
-    case
-      when self.class.Model.superclass == ActiveRecord::Base then rel.clear
-      when self.class.Model.superclass == DataMapper::Base   then rel.nullify_association
-      when self.class.Model.include?( DataMapper::Resource ) then rel.nullify_association
-    end
-    rel
-  end
-
-  def update_has_many_association( assoc, model, ids )
+  def update_has_many_association( assoc, ids )
     # remove all of the associated items
-    rel = clear_association( model, assoc )
+    rel = @object.send( assoc[:name] )
+    @object.clear_association( rel )
 
     # add all of the objects to the relationship
-    for obj in find_all( assoc.klass, :conditions => ["#{ assoc.klass.primary_key } in (?)", ids] )
+    conds = { assoc[:parent_key].first => ids }
+    model = MerbAdmin::Models.new( assoc[:child_model] )
+    for obj in model.find_all( conds )
       rel << obj
     end
-    model.save
+
+    @object.save
   end
 
 end

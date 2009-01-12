@@ -14,7 +14,7 @@ module Merb
       end
 
       def object_url( obj )
-        url(:admin_model, obj.type.to_s.snake_case, 'show', obj.id)
+        slice_url(:model, obj.type.to_s.snake_case, 'show', obj.id)
       end
 
       def print_pages

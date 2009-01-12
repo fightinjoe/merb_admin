@@ -11,7 +11,10 @@
   # @model
 %>
 
-<dt><%= association[:name].to_s.capitalize %></dt>
+<dt>
+  <%= association[:name].to_s.capitalize %>
+  <%= (t = association[:near_rel]) ? "<small>through #{t.to_s.camel_case}</small>" : '' %>
+</dt>
 <dd>
   <ol>
     <% for obj in @object.send( association[:name] ) %>

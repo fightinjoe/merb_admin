@@ -11,7 +11,7 @@
   assoc_model = MerbAdmin::Models.new( association[:parent_model] )
   #foreign_key = model.class.scaf_foreign_key_name( association )
 %>
-<select name="model[<%= name %>]">
+<select name="object[<%= name %>]">
   <% selected_value = @object && @object.send( key ) %>
 
   <option value=""></option>

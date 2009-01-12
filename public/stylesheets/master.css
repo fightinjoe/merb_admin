@@ -94,6 +94,12 @@ dl dt {
   text-align:right;
 }
 
+dl dt small {
+  display:block;
+  font-size:.8em;
+  color: silver;
+}
+
 dl dd {
   padding-left: 1em;
   margin: 0 0 .5em 175px;

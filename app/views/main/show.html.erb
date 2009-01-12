@@ -3,9 +3,9 @@
 <div id="content" class="model">
   <h2>
     <%= catch_content( :for_title ) %>
-    <a href="<%= url( :admin_home ) %>">View all</a>
-    <a href="<%= url( :admin_model, @model.singular_name, 'edit', @object.id ) %>">Edit</a>
-    <form action="<%= url( :admin_model, @model.singular_name, 'destroy', @model.id ) %>" method="POST">
+    <a href="<%= slice_url( :home ) %>">View all</a>
+    <a href="<%= slice_url( :model, @model.singular_name.to_s, 'edit', @object.id ) %>">Edit</a>
+    <form action="<%= slice_url( :destroy_model, @model.singular_name.to_s, @object.id ) %>" method="POST">
       <input type="hidden" name="_method" value="DELETE" />
       <input type="submit" value="Delete" />
     </form>

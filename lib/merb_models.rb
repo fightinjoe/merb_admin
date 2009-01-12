@@ -72,7 +72,7 @@ module MerbAdmin; class Models
     # Given the +id+ of an object, finds that object by calling the
     # finder method on the model.
     def find( id )
-      model.get( id )
+      model.get( id ).extend( InstanceMethods )
     end
 
     def has_many_associations
@@ -97,8 +97,16 @@ module MerbAdmin; class Models
           :parent_model => rel.parent_model,
           :parent_key   => rel.parent_key.collect { |p| p.name },
           :child_model  => rel.child_model,
-          :child_key    => rel.child_key.collect { |p| p.name }
+          :child_key    => rel.child_key.collect { |p| p.name },
+          :remote_rel   => rel.options[:remote_relationship_name],
+          :near_rel     => rel.options[:near_relationship_name]
         }
+      }
+    end
+
+    def association_names
+      associations.collect { |a|
+        a[:type] == :belongs_to ? a[:parent_name] : a[:child_name]
       }
     end
 
@@ -124,5 +132,12 @@ module MerbAdmin; class Models
           raise 'unknowny type of association'
         end
       end
+
+    module InstanceMethods
+      def clear_association( assoc )
+        assoc.clear
+      end
+    end
+
   end
 end; end

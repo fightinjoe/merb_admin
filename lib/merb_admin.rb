@@ -2,7 +2,7 @@ if defined?(Merb::Plugins)
 
   $:.unshift File.dirname(__FILE__)
 
-  load_dependency 'merb-slices'
+  load_dependency 'merb-slices', '1.0.7.1'
   Merb::Plugins.add_rakefiles "merb_admin/merbtasks", "merb_admin/slicetasks", "merb_admin/spectasks"
 
   # Register the Slice for the current host application
@@ -23,7 +23,7 @@ if defined?(Merb::Plugins)
     # Slice metadata
     self.description = "MerbAdmin is a chunky Merb slice!"
     self.version = "0.0.1"
-    self.author = "Engine Yard"
+    self.author = "Aaron Wheeler"
     
     # Stub classes loaded hook - runs before LoadClasses BootLoader
     # right after a slice's classes have been loaded internally.
@@ -56,8 +56,19 @@ if defined?(Merb::Plugins)
       # scope.match('index(.:format)').to(:controller => 'main', :action => 'index').name(:index)
       # the slice is mounted at /merb_admin - note that it comes before default_routes
       scope.match('/').to(:controller => 'main', :action => 'all').name(:home)
+
+      scope.match('/:model/show/:id(.:format)', :method => :put).
+        to(:controller => 'main', :action => 'update').name(:update_model)
+
+      scope.match('/:model/show/:id(.:format)', :method => :delete).
+        to(:controller => 'main', :action => 'destroy').name(:destroy_model)
+
+      scope.match('/:model(/index.:format)', :method => :post).
+        to(:controller => 'main', :action => 'create').name(:create_model)
+
       # enable slice-level default routes by default
-      scope.match('/:model(/:action(/:id(.:format)))').to(:controller => 'main').name(:model)
+      scope.match('/:model(/:action(/:id(.:format)))', :method => :get).
+        to(:controller => 'main').name(:model)
     end
     
   end
