@@ -5,10 +5,10 @@ require 'merb-core'
 require 'merb-core/tasks/merb'
 
 GEM_NAME = "merb_admin"
-AUTHOR = "Your Name"
-EMAIL = "Your Email"
-HOMEPAGE = "http://merbivore.com/"
-SUMMARY = "Merb Slice that provides ..."
+AUTHOR = "Aaron Wheeler"
+EMAIL = "aaron@fightinjoe.com"
+HOMEPAGE = "http://fightinjoe.com/"
+SUMMARY = "Merb Slice that provides an Admin panel for viewing and editing models in the database."
 GEM_VERSION = "1.0"
 
 spec = Gem::Specification.new do |s|

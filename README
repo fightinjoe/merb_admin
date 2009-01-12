@@ -1,7 +1,35 @@
 MerbAdmin
 =========
 
-A slice for the Merb framework.
+Merb Slice that provides an Admin panel for viewing and editing models in the database.
+
+== Quick installation
+
+Compile and install the gem:
+<code><pre>
+sudo gem install pkg/merb_app-1.0.gem
+</pre></code>
+
+In your init.rb file or dependencies.rb file:
+<code><pre>
+dependency 'merb_admin'
+</pre></code>
+
+Add the routes to your router.rb file:
+<code><pre>
+add_slice(:merb_admin, :name_prefix => 'admin', :path => "admin")
+</pre></code>
+
+Then, navigate to localhost:4000/admin.  Voila!
+
+== ToDo:
+
+* User customization - there is no way to insert fields that aren't in the database.  This causes problems, for example, with a User model that requires a password for creation
+* Pagination - shows 3 pages when there is only 1 or 2 pages.
+* ActiveRecord support - currently only works with DataMapper 0.9.9
+* Tests!
+
+== Begin default Merb slice notes ==
 
 ------------------------------------------------------------------------------
 

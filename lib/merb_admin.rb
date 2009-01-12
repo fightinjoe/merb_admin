@@ -21,8 +21,8 @@ if defined?(Merb::Plugins)
   module MerbAdmin
     
     # Slice metadata
-    self.description = "MerbAdmin is a chunky Merb slice!"
-    self.version = "0.0.1"
+    self.description = "Merb Slice that provides an Admin panel for viewing and editing models in the database."
+    self.version = "1.0.0"
     self.author = "Aaron Wheeler"
     
     # Stub classes loaded hook - runs before LoadClasses BootLoader
