@@ -3,7 +3,7 @@ require File.join( File.dirname(__FILE__), '..', '..', 'lib', 'metaid' )
 
 class MerbAdmin::Main < MerbAdmin::Application
   before :find_models
-  before :find_model
+  before :find_model, :exclude => ['all']
   before :find_object, :only => ['show','edit', 'update', 'destroy']
 
   def all() render; end
