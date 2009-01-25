@@ -1,6 +1,14 @@
+<%
+  # An array of attributes that key belongs_to associations for the model
+  belongs_to_keys = @model.belongs_to_associations.collect { |b| b[:child_key].first }
+%>
+
 <dl>
   <% @model.attributes.each do |attribute| %>
-    <% name = attribute[:name] %>
+    <%
+      name = attribute[:name]
+      next if belongs_to_keys.include?( name )
+    %>
 
     <dt><%= name %></dt>
     <dd>

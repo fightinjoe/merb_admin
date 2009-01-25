@@ -1,17 +1,18 @@
 require 'paginator'
 
 module MerbAdmin; class Models
-  MODEL_REGEXP = %r{^class ([\w\d_\-:]+)(.*)?$}
+  MODEL_REGEXP = %r{^class ([\w\d_\-:]+).*?$}
 
   # Returns all models for a given Merb app
   def self.all
     return @models if @models
 
     @models ||= []
-    Dir.glob( Merb.dir_for(:model) / Merb.glob_for(:model) ).each { |f|
-      if File.read(f).match( MODEL_REGEXP )
-        model = new( lookup( $1 ) )
-        @models << model
+    file_pattern = Merb.glob_for(:model) || '*.rb'
+    Dir.glob( Merb.dir_for(:model) / file_pattern ).each { |f|
+      for m in File.read(f).scan( MODEL_REGEXP ).flatten
+        model = lookup( m )
+        @models << new(model) if model
       end
     }
     @models
@@ -21,7 +22,8 @@ module MerbAdmin; class Models
   def self.lookup( model_name )
     out = const_get( model_name )
     raise "could not find model #{model_name}" if out.nil?
-    out
+    return out if out.include?( DataMapper::Resource )
+    nil
   end
 
   attr_accessor :model

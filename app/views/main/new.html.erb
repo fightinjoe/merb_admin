@@ -3,7 +3,7 @@
 <div id="content">
   <h2>
     Create a new <%= @model.singular_name %>
-    <a href="<%= url( :admin_model, @model.singular_name ) %>">Cancel</a>
+    <a href="<%= slice_url( :model, @model.singular_name.to_s, 'index' ) %>">Cancel</a>
   </h2>
 
   <form action="<%= slice_url(:create_model, @model.singular_name.to_s) %>" method="POST">
