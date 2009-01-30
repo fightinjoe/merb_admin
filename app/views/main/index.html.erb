@@ -7,13 +7,13 @@
 <div id="content">
   <h2>
     All <%= @model.count %> <%= @model.pretty_name %>
-    <a href="<%= url(:admin_model, @model.singular_name, 'new') %>">New</a></li>
+    <a href="<%= slice_url(:model, @model.singular_name.to_s, 'new') %>">New</a></li>
   </h2>
 
   <ol start="<%#= start %>" class="models">
     <% for obj in @model.pages.page(params[:page]) -%>
       <li>
-        <a href="<%= url(:admin_model, @model.singular_name, 'show', obj.id) %>">
+        <a href="<%= slice_url(:model, @model.singular_name.to_s, 'show', obj.id) %>">
           <%= obj.try(:name) || obj.try(:title) || "#{ obj.class.to_s } ##{ obj.id }" %>
         </a>
       </li>

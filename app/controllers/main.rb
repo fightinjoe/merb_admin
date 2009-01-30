@@ -26,7 +26,7 @@ class MerbAdmin::Main < MerbAdmin::Application
     # zero out all blank fields
     params[:object].each { |k,v| params[:object][k] = nil if v.blank? }
 
-    @object = @model.model.new( params[:object] )
+    @object = @model.newInstance( params[:object] )
     if @object.save
       associations.each { |a, ids| update_has_many_association( a, ids ) }
       redirect slice_url( :model, @model.singular_name.to_s, 'show', @object.id )

@@ -10,7 +10,7 @@
   <ol class="models">
     <% for mod in @models -%>
       <li>
-        <a href="<%= url(:admin_model, :model => mod.singular_name) %>">
+        <a href="<%= slice_url(:model, mod.singular_name.to_s) %>">
           <%= mod.pretty_name.capitalize %>
         </a>
       </li>

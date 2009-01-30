@@ -77,6 +77,11 @@ module MerbAdmin; class Models
       model.get( id ).extend( InstanceMethods )
     end
 
+    # Given a hash of params, creates a new instance of the model
+    def newInstance( params={} )
+      model.new( params ).extend( InstanceMethods )
+    end
+
     def has_many_associations
       associations.select { |a| a[:type] == :has_many }
     end

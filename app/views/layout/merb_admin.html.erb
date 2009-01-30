@@ -10,7 +10,7 @@
         <h1>
           MerbAdmin
           <% for m in @models %>
-            <a href="<%= url( :admin_model, m.singular_name ) %>">
+            <a href="<%= slice_url( :model, m.singular_name.to_s ) %>">
               <%= m.pretty_name %>
             </a>
           <% end %>
