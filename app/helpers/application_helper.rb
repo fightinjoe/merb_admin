@@ -20,7 +20,7 @@ module Merb
       def print_pages
         page  = params[:page].to_i
         pages = (1..3).to_a + (page-2..page+2).to_a + (@model.pages.last.number-2..@model.pages.last.number).to_a
-        pages = pages.select{ |p| p > 0 }.uniq.sort
+        pages = pages.select{ |p| p > 0 && p <= @model.pages.number_of_pages }.uniq.sort
         prev  = 0
         out   = '<ul class="horizontal unlist pages"><li>Page:</li>'
         for p in pages
