@@ -20,11 +20,22 @@
       <%= through %> relationship.
     </p>
   <% else %>
-    <select name="object[<%= name %>][]" multiple="multiple">
+
+    <ul class="selected">
+      <% for obj in @object.send( association[:name] ) %>
+        <li>
+          <%= object_link(obj) %>
+          <a href="#" onclick="this.parentNode.parentNode.removeChild(this.parentNode); this.blur(); return false;" class="remove">x</a>
+          <input type="hidden" name="object[<%= name %>][]" value="<%= obj.id %>" />
+        </li>
+      <% end %>
+    </ul>
+    
+    <select name="" multiple="multiple">
       <% for obj in assoc_model.find_all(:limit => 10) %>
         <% selected = @object && @object.send( name ).include?( obj ) %>
         <option value="<%= obj.id %>"<%= ' selected="selected"' if selected %>>
-          <%= model_title(obj) %>
+          <%= object_title(obj) %>
         </option>
       <% end %>
     </select>

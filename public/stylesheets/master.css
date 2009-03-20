@@ -114,3 +114,12 @@ dl dd textarea {
 dl dd input {
   width: 300px;
 }
+
+/*== has_many edit ==*/
+
+form dd .selected {
+  list-style:none;
+  padding:0;
+  float:left;
+  margin-right:5em;
+}

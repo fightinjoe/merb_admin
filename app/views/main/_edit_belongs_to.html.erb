@@ -17,7 +17,7 @@
   <option value=""></option>
   <% for obj in assoc_model.find_all( :limit => 10 ) + [@object && @object.send(name)].flatten %>
     <option value="<%= obj.id %>"<%= ' selected="selected"' if obj.id == selected_value %>>
-      <%= model_title(obj) %>
+      <%= object_title(obj) %>
     </option>
   <% end %>
 </select>

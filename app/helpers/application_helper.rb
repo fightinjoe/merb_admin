@@ -1,14 +1,14 @@
 module Merb
   module MerbAdmin
     module ApplicationHelper
-      def model_title( obj )
+      def object_title( obj )
         obj.try(:title) || obj.try(:name) || "#{ obj.class.to_s } ##{ obj.id }"
       end
 
       def object_link( obj, text = nil )
         <<-EOS
         <a href="#{ object_url( obj ) }">
-          #{ text || model_title( obj ) }
+          #{ text || object_title( obj ) }
         </a>
         EOS
       end
